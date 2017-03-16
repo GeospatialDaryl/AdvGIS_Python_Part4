@@ -1,15 +1,13 @@
 
 ```python
-# # # 0)  Set-up
-# we are setting up our environment
 # uncomment the import when running the Script standalone
 import arcpy
 
 #global settings
 outWS = r"D:\CSP7300\ModelBuilder\FER_Exercise\Scratch.gdb"
 arcpy.env.workspace = outWS
-#arcpy.env.snapRaster = mySnapRaster
 arcpy.env.overwriteOutput = True
+
 Verbose = True
 
 # # # 1)  Open Catalog, Map, and Idle
@@ -117,10 +115,8 @@ arcpy.MakeFeatureLayer_management(in_features=ptsBBSS,
 #  
 #  http://desktop.arcgis.com/en/arcmap/10.4/tools/data-management-toolbox/copy-features.htm
 #  CopyFeatures_management (in_features, out_feature_class, {config_keyword}, {spatial_grid_1}, {spatial_grid_2}, {spatial_grid_3})
-listExportFC = ["ptBBSS_GoodGrass", "ptsBBSS_GoodHay"]
 
-for items in listExportFC:
-    # remember, we dont' need the path because we set the workspace.
-    # otherwise, we need to prepend the path to the output FC name
-    arcpy.CopyFeatures_management(items, items)
+arcpy.CopyFeatures_management("ptBBSS_GoodGrass", "ptsBBSS_GoodGrass")
+arcpy.CopyFeatures_management("ptBBSS_GoodHay", "ptsBBSS_GoodHay")
+
 ```
