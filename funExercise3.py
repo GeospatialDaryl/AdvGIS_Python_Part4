@@ -10,6 +10,7 @@ def findGoodBBSS(inputFC = r"D:\CSP7300\ModelBuilder\FER_Exercise\brwca_project.
     #global settings
     outWS = inputGDBforOutput
     arcpy.env.workspace = outWS
+    arcpy.env.overwriteOutput = True
     # # # 1)  Open Catalog, Map, and Idle
     # # #     add the PtsBBSS, and 'brwca_rough'
     # For writing Paths...
@@ -93,23 +94,25 @@ def findGoodBBSS(inputFC = r"D:\CSP7300\ModelBuilder\FER_Exercise\brwca_project.
 
     where = inputField+" >"+str(midPointGrass)
     
-    if Verbose: print where1
+    if Verbose: print where
 
-    goodName = inputFC[:-4]
+    goodName = inputField[:-4]
+
+    if Verbose:  print goodName
+
+    goodLyr = "ptBBSS_"+goodName
     
     arcpy.MakeFeatureLayer_management(in_features=ptsBBSS,
-                                      out_layer="ptBBSS_"+goodName,
+                                      out_layer=goodLyr,
                                       where_clause=where)
 
     # # # 3)  Now let's save it out
     #  
     #  http://desktop.arcgis.com/en/arcmap/10.4/tools/data-management-toolbox/copy-features.htm
     #  CopyFeatures_management (in_features, out_feature_class, {config_keyword}, {spatial_grid_1}, {spatial_grid_2}, {spatial_grid_3})
-    arcpy.CopyFeatures_management("ptBBSS_Good"+goodName, "ptsBBSS_Good"+goodName)
-
-findGoodBBSS()
-
-
-
-
-
+    try:
+        arcpy.CopyFeatures_management(goodLyr, goodLyr)
+    except:
+        pass
+    return goodLyr
+goodlLyr = findGoodBBSS()
